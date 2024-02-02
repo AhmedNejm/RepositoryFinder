@@ -11,12 +11,12 @@ try:
         if repositories:
             for repo in repositories:
                 print(repo['full_name']+ " | " + repo['html_url'])
-            print("[-] Original repository")
+            print("[•] Don't forget to put a star to the repository on GitHub.")
         else:
-            print("[-] No repositories:")
+            print("[•] Error. No repository found")
     else:
-        print("[-] Error")
+        print("[•] Error. Unknown")
 except requests.exceptions.ConnectionError:
-    print("[-] Check the internet and try again")
+    print("[•] Please check your internet connection and try again")
 except Exception as error:
-    print("[-] Unknown error : " + error)
+    print("[•] Error. " + str(error))
