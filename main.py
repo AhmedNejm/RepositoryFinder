@@ -1,22 +1,25 @@
 import requests
 
-RepositoryName = input("[~] Repository name : ")
+def search_github(query):
+    try:
+        response = requests.get(f'https://api.github.com/search/repositories?q={query}')
+        response.raise_for_status()
 
-URL = f"https://api.github.com/search/repositories?q={RepositoryName}&type=public"
+        data = response.json()
+        items = data.get('items', [])
 
-try:
-    request = requests.get(URL)
-    if request.status_code == 200:
-        repositories = request.json()["items"]
-        if repositories:
-            for repo in repositories:
-                print(repo['full_name']+ " | " + repo['html_url'])
-            print("[•] Don't forget to put a star to the repository on GitHub.")
+        if not items:
+            print("No results found.")
         else:
-            print("[•] Error. No repository found")
-    else:
-        print("[•] Error. Unknown")
-except requests.exceptions.ConnectionError:
-    print("[•] Please check your internet connection and try again")
-except Exception as error:
-    print("[•] Error. " + str(error))
+            for item in items:
+                #print(item)
+                print(f"Repository URL www.github.com/{item['full_name']}, Description: {item['description']}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred while connecting to the server: {e}")
+
+if __name__ == "__main__":
+    search_query = input("Enter the search term: ")
+    search_github(search_query)
+
+print("Copyright © 2024 - Ahmed Negm")
